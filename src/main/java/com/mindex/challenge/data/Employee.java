@@ -2,6 +2,10 @@ package com.mindex.challenge.data;
 
 import java.util.List;
 
+import org.springframework.data.annotation.Transient;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class Employee {
     private String employeeId;
     private String firstName;
@@ -59,5 +63,15 @@ public class Employee {
 
     public void setDirectReports(List<Employee> directReports) {
         this.directReports = directReports;
+    }
+
+    @Transient
+    @JsonIgnore
+    public int getDirectReportCount() {
+        if (this.directReports != null) {
+            return this.directReports.size();
+        }
+
+        return 0;
     }
 }

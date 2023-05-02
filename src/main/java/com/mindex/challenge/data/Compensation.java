@@ -3,10 +3,12 @@ package com.mindex.challenge.data;
 import java.util.Date;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 
 public class Compensation {
     @Id
     private String compensationId;
+    @DBRef
     private Employee employee;
     private double salary;
     private Date effectiveDate;

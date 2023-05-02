@@ -41,6 +41,12 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
+    public Employee readReportingStructure(String id) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'readReportingStructure'");
+    }
+
+    @Override
     public Employee update(Employee employee) {
         LOG.debug("Updating employee [{}]", employee);
 

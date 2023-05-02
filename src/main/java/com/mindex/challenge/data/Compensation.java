@@ -3,38 +3,21 @@ package com.mindex.challenge.data;
 import java.util.Date;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 
 public class Compensation {
     @Id
-    private String compensationId;
-    @DBRef
-    private Employee employee;
+    private String employee;
     private double salary;
     private Date effectiveDate;
     
     public Compensation() {
     }
-
-    public Compensation(Employee employee, double salary, Date effectiveDate) {
-        this.employee = employee;
-        this.salary = salary;
-        this.effectiveDate = effectiveDate;
-    }
-
-    public String getCompensationId() {
-        return compensationId;
-    }
-
-    public void setCompensationId(String compensationId) {
-        this.compensationId = compensationId;
-    }
     
-    public Employee getEmployee() {
+    public String getEmployee() {
         return employee;
     }
     
-    public void setEmployee(Employee employee) {
+    public void setEmployee(String employee) {
         this.employee = employee;
     }
     

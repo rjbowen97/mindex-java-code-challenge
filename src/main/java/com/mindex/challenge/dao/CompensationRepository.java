@@ -6,5 +6,5 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 @Repository
 public interface CompensationRepository extends MongoRepository<Compensation, String> {
-    Compensation findByEmployeeEmployeeId(String employeeId);
+    Compensation findByEmployee(String employee);
 }

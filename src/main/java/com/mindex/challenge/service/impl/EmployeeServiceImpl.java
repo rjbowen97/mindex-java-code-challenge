@@ -53,26 +53,27 @@ public class EmployeeServiceImpl implements EmployeeService {
             throw new RuntimeException("Invalid employeeId: " + id);
         }
 
-        int numberOfReports = countNumberOfReports(employee);
+        int totalNumberOfReports = getTotalNumberOfReports(employee);
 
-        return new ReportingStructure(employee, numberOfReports);
+        return new ReportingStructure(employee, totalNumberOfReports);
 
     }
 
-    private int countNumberOfReports(Employee employee) {
+    private int getTotalNumberOfReports(Employee employee) {
         LOG.debug("Counting number of reports for Employee [{}]", employee);
 
-        int numberOfReports = 0;
+        int directReportCount = employee.getDirectReportCount();
 
-        List<Employee> directReports = employee.getDirectReports();
-        if (directReports != null && !directReports.isEmpty()) {
-            return numberOfReports += directReports
-            .stream()
-            .mapToInt(this::countNumberOfReports)
-            .sum();
+        if (directReportCount > 0) {
+            List<Employee> directReports = employee.getDirectReports();
+            directReportCount += directReports
+                    .stream()
+                    .mapToInt(currentDirectReport -> employeeRepository
+                            .findByEmployeeId(currentDirectReport.getEmployeeId()).getDirectReportCount())
+                    .sum();
         }
 
-        return numberOfReports;
+        return directReportCount;
     }
 
     @Override

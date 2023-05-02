@@ -32,7 +32,7 @@ public class EmployeeController {
     public Employee readReportingStructure(@PathVariable String id) {
         LOG.debug("Received employee readReportingStructure request for id [{}]", id);
 
-        return employeeService.read(id);
+        return employeeService.readReportingStructure(id);
     }
 
     @PutMapping("/employee/{id}")

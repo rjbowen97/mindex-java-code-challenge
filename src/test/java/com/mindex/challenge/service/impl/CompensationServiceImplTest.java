@@ -16,6 +16,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -111,11 +112,14 @@ public class CompensationServiceImplTest {
                 .getForEntity(compensationReadUrl, Compensation.class,
                         createdCompensation.getEmployee().getEmployeeId())
                 .getBody();
+
+        assertNotNull(createdCompensation.getEmployee());
         assertCompensationEquivalence(createdCompensation, readCompensation);
     }
 
     private static void assertCompensationEquivalence(Compensation expected, Compensation actual) {
-        assertEquals(expected.getEmployee().getEmployeeId(), actual.getEmployee().getEmployeeId());
+        assertTrue(expected.getEmployee().equals(actual.getEmployee()));
+
         assertEquals(expected.getSalary(), actual.getSalary(), 0.001);
         assertEquals(expected.getEffectiveDate(), actual.getEffectiveDate());
     }

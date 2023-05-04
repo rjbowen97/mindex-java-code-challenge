@@ -87,4 +87,31 @@ public class Employee {
 
         return 0;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null || !(obj instanceof Employee)) {
+            return false;
+        }
+
+        Employee otherEmployee = (Employee) obj;
+
+        // Check if all fields are equal
+        boolean employeeIdEquals = (this.employeeId == null && otherEmployee.employeeId == null)
+                || (this.employeeId != null && this.employeeId.equals(otherEmployee.employeeId));
+        boolean firstNameEquals = (this.firstName == null && otherEmployee.firstName == null)
+                || (this.firstName != null && this.firstName.equals(otherEmployee.firstName));
+        boolean lastNameEquals = (this.lastName == null && otherEmployee.lastName == null)
+                || (this.lastName != null && this.lastName.equals(otherEmployee.lastName));
+        boolean positionEquals = (this.position == null && otherEmployee.position == null)
+                || (this.position != null && this.position.equals(otherEmployee.position));
+        boolean departmentEquals = (this.department == null && otherEmployee.department == null)
+                || (this.department != null && this.department.equals(otherEmployee.department));
+        boolean directReportsEquals = (this.directReports == null && otherEmployee.directReports == null)
+                || (this.directReports != null && this.directReports.equals(otherEmployee.directReports));
+
+        return employeeIdEquals && firstNameEquals && lastNameEquals && positionEquals && departmentEquals
+                && directReportsEquals;
+    }
+
 }

@@ -1,6 +1,7 @@
 package com.mindex.challenge.service.impl;
 
 import com.mindex.challenge.data.Employee;
+import com.mindex.challenge.data.ReportingStructure;
 import com.mindex.challenge.service.EmployeeService;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,12 +19,16 @@ import org.springframework.test.context.junit4.SpringRunner;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import java.util.Arrays;
+import java.util.List;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class EmployeeServiceImplTest {
 
     private String employeeUrl;
     private String employeeIdUrl;
+    private String employeeReportingStructureUrl;
 
     @Autowired
     private EmployeeService employeeService;
@@ -38,6 +43,7 @@ public class EmployeeServiceImplTest {
     public void setup() {
         employeeUrl = "http://localhost:" + port + "/employee";
         employeeIdUrl = "http://localhost:" + port + "/employee/{id}";
+        employeeReportingStructureUrl = "http://localhost:" + port + "/employee/reporting-structure/{id}";
     }
 
     @Test
@@ -69,6 +75,70 @@ public class EmployeeServiceImplTest {
 
         assertEquals(createdEmployee.getEmployeeId(), readEmployee.getEmployeeId());
         assertEmployeeEquivalence(createdEmployee, readEmployee);
+    }
+
+    @Test
+    public void testReadReportingStructure() {
+        Employee johnLennon = new Employee();
+        johnLennon.setFirstName("John");
+        johnLennon.setLastName("Lennon");
+        johnLennon.setDepartment("Engineering");
+        johnLennon.setPosition("Developer");
+
+        Employee paulMcCartney = new Employee();
+        paulMcCartney.setFirstName("Paul");
+        paulMcCartney.setLastName("McCartney");
+        paulMcCartney.setDepartment("Music");
+        paulMcCartney.setPosition("Singer");
+
+        Employee ringoStarr = new Employee();
+        ringoStarr.setFirstName("Ringo");
+        ringoStarr.setLastName("Starr");
+        ringoStarr.setDepartment("Music");
+        ringoStarr.setPosition("Drummer");
+
+        Employee peteBest = new Employee();
+        peteBest.setFirstName("Pete");
+        peteBest.setLastName("Best");
+        peteBest.setDepartment("Music");
+        peteBest.setPosition("Drummer");
+
+        Employee georgeHarrison = new Employee();
+        georgeHarrison.setFirstName("George");
+        georgeHarrison.setLastName("Harrison");
+        georgeHarrison.setDepartment("Music");
+        georgeHarrison.setPosition("Guitarist");
+
+        List<Employee> johnLennonDirectReports = Arrays.asList(new Employee[] {
+                paulMcCartney,
+                ringoStarr
+        });
+        johnLennon.setDirectReports(johnLennonDirectReports);
+
+        List<Employee> ringoStarrDirectReports = Arrays.asList(new Employee[] {
+                peteBest,
+                georgeHarrison
+        });
+        ringoStarr.setDirectReports(ringoStarrDirectReports);
+
+        Employee createdGeorgeHarrison = restTemplate
+                .postForEntity(employeeUrl, georgeHarrison, Employee.class)
+                .getBody();
+        Employee createdPeteBest = restTemplate.postForEntity(employeeUrl, peteBest, Employee.class)
+                .getBody();
+        Employee createdRingoStarr = restTemplate.postForEntity(employeeUrl, ringoStarr, Employee.class)
+                .getBody();
+        Employee createdPaulMcCartney = restTemplate
+                .postForEntity(employeeUrl, paulMcCartney, Employee.class)
+                .getBody();
+        Employee createdJohnLennon = restTemplate.postForEntity(employeeUrl, johnLennon, Employee.class)
+                .getBody();
+
+        ReportingStructure readReportingStructure = restTemplate
+                .getForEntity(employeeReportingStructureUrl, ReportingStructure.class, createdJohnLennon.getEmployeeId()).getBody();
+
+        assertEquals(4, readReportingStructure.getNumberOfReports());
+        assertEmployeeEquivalence(createdJohnLennon, readReportingStructure.getEmployee());
     }
 
     @Test

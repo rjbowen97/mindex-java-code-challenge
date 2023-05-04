@@ -14,15 +14,12 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
-import java.util.UUID;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -35,6 +32,7 @@ public class CompensationServiceImplTest {
 
     @Autowired
     private EmployeeService employeeService;
+
     @Autowired
     private CompensationService compensationService;
 
@@ -74,8 +72,8 @@ public class CompensationServiceImplTest {
         Compensation createdCompensation = restTemplate
                 .postForEntity(compensationCreateUrl, testCompensation, Compensation.class).getBody();
 
-        assertNotNull(createdCompensation.getEmployee());
-        assertCompensationEquivalence(testCompensation, createdCompensation);
+        assertTrue(createdCompensation.equals(testCompensation));
+
     }
 
     private Date convertStringToDate(String dateString) {
@@ -113,14 +111,6 @@ public class CompensationServiceImplTest {
                         createdCompensation.getEmployee().getEmployeeId())
                 .getBody();
 
-        assertNotNull(createdCompensation.getEmployee());
-        assertCompensationEquivalence(createdCompensation, readCompensation);
-    }
-
-    private static void assertCompensationEquivalence(Compensation expected, Compensation actual) {
-        assertTrue(expected.getEmployee().equals(actual.getEmployee()));
-
-        assertEquals(expected.getSalary(), actual.getSalary(), 0.001);
-        assertEquals(expected.getEffectiveDate(), actual.getEffectiveDate());
+        assertTrue(createdCompensation.equals(readCompensation));
     }
 }

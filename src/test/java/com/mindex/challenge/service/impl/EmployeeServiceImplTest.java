@@ -193,9 +193,6 @@ public class EmployeeServiceImplTest {
         }
 
         private static void assertEmployeeEquivalence(Employee expected, Employee actual) {
-                assertEquals(expected.getFirstName(), actual.getFirstName());
-                assertEquals(expected.getLastName(), actual.getLastName());
-                assertEquals(expected.getDepartment(), actual.getDepartment());
-                assertEquals(expected.getPosition(), actual.getPosition());
+                expected.equals(actual);
         }
 }

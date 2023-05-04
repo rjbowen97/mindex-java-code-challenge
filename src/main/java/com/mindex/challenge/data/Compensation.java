@@ -1,6 +1,7 @@
 package com.mindex.challenge.data;
 
 import java.util.Date;
+import java.util.Objects;
 
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
@@ -78,4 +79,24 @@ public class Compensation {
     public void setEffectiveDate(Date effectiveDate) {
         this.effectiveDate = effectiveDate;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        // check if objects are identical
+        if (this == o)
+            return true;
+        // check if object is null or a different type
+        if (o == null || getClass() != o.getClass())
+            return false;
+
+        Compensation that = (Compensation) o;
+
+        // compare values of fields
+        if (Double.compare(that.salary, salary) != 0)
+            return false;
+        if (!Objects.equals(employee, that.employee))
+            return false;
+        return Objects.equals(effectiveDate, that.effectiveDate);
+    }
+
 }

@@ -18,6 +18,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.UUID;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -42,9 +43,9 @@ public class CompensationServiceImplTest {
     }
 
     @Test
-    public void testCreateRead() {
+    public void testCreate() {
         Compensation testCompensation = new Compensation();
-        testCompensation.setEmployee("12345");
+        testCompensation.setEmployee(UUID.randomUUID().toString());
         testCompensation.setSalary(100000.0);
 
         String dateString = "2023-05-03";
@@ -60,6 +61,23 @@ public class CompensationServiceImplTest {
 
         assertNotNull(createdCompensation.getEmployee());
         assertCompensationEquivalence(testCompensation, createdCompensation);
+    }
+
+    @Test
+    public void testRead() {
+        Compensation testCompensation = new Compensation();
+        testCompensation.setEmployee(UUID.randomUUID().toString());
+        testCompensation.setSalary(100000.0);
+
+        String dateString = "2023-05-03";
+        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate localDate = LocalDate.parse(dateString, dateFormat);
+        Date date = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+        testCompensation.setEffectiveDate(date);
+
+        Compensation createdCompensation = restTemplate
+                .postForEntity(compensationCreateUrl, testCompensation, Compensation.class).getBody();
 
         // Read check
         Compensation readCompensation = restTemplate

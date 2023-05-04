@@ -1,9 +1,3 @@
-/**
- * This class is the controller for the Compensation API. It handles all REST requests related to Compensation.
- * 
- * @author  RJ Bowen
- * @version 1.0
- */
 package com.mindex.challenge.controller;
 
 import com.mindex.challenge.data.Compensation;
@@ -13,6 +7,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * This class is the controller for the Compensation API. It handles all REST requests related to Compensation.
+ * 
+ * @author  RJ Bowen
+ * @version 1.0
+ */
 @RestController
 public class CompensationController {
     private static final Logger LOG = LoggerFactory.getLogger(CompensationController.class);

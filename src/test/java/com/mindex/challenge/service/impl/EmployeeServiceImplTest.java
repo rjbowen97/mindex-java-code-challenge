@@ -79,63 +79,63 @@ public class EmployeeServiceImplTest {
 
     @Test
     public void testReadReportingStructure() {
-        Employee johnLennon = new Employee();
-        johnLennon.setFirstName("John");
-        johnLennon.setLastName("Lennon");
-        johnLennon.setDepartment("Engineering");
-        johnLennon.setPosition("Developer");
-
-        Employee paulMcCartney = new Employee();
-        paulMcCartney.setFirstName("Paul");
-        paulMcCartney.setLastName("McCartney");
-        paulMcCartney.setDepartment("Music");
-        paulMcCartney.setPosition("Singer");
-
-        Employee ringoStarr = new Employee();
-        ringoStarr.setFirstName("Ringo");
-        ringoStarr.setLastName("Starr");
-        ringoStarr.setDepartment("Music");
-        ringoStarr.setPosition("Drummer");
-
-        Employee peteBest = new Employee();
-        peteBest.setFirstName("Pete");
-        peteBest.setLastName("Best");
-        peteBest.setDepartment("Music");
-        peteBest.setPosition("Drummer");
-
         Employee georgeHarrison = new Employee();
         georgeHarrison.setFirstName("George");
         georgeHarrison.setLastName("Harrison");
         georgeHarrison.setDepartment("Music");
         georgeHarrison.setPosition("Guitarist");
 
-        List<Employee> johnLennonDirectReports = Arrays.asList(new Employee[] {
-                paulMcCartney,
-                ringoStarr
-        });
-        johnLennon.setDirectReports(johnLennonDirectReports);
-
-        List<Employee> ringoStarrDirectReports = Arrays.asList(new Employee[] {
-                peteBest,
-                georgeHarrison
-        });
-        ringoStarr.setDirectReports(ringoStarrDirectReports);
-
         Employee createdGeorgeHarrison = restTemplate
                 .postForEntity(employeeUrl, georgeHarrison, Employee.class)
                 .getBody();
+
+        Employee peteBest = new Employee();
+        peteBest.setFirstName("Pete");
+        peteBest.setLastName("Best");
+        peteBest.setDepartment("Music");
+        peteBest.setPosition("Drummer");
         Employee createdPeteBest = restTemplate.postForEntity(employeeUrl, peteBest, Employee.class)
                 .getBody();
+
+        List<Employee> ringoStarrDirectReports = Arrays.asList(new Employee[] {
+                createdPeteBest,
+                createdGeorgeHarrison
+        });
+        Employee ringoStarr = new Employee();
+        ringoStarr.setFirstName("Ringo");
+        ringoStarr.setLastName("Starr");
+        ringoStarr.setDepartment("Music");
+        ringoStarr.setPosition("Drummer");
+        ringoStarr.setDirectReports(ringoStarrDirectReports);
         Employee createdRingoStarr = restTemplate.postForEntity(employeeUrl, ringoStarr, Employee.class)
                 .getBody();
+
+        Employee paulMcCartney = new Employee();
+        paulMcCartney.setFirstName("Paul");
+        paulMcCartney.setLastName("McCartney");
+        paulMcCartney.setDepartment("Music");
+        paulMcCartney.setPosition("Singer");
         Employee createdPaulMcCartney = restTemplate
                 .postForEntity(employeeUrl, paulMcCartney, Employee.class)
                 .getBody();
+
+        List<Employee> johnLennonDirectReports = Arrays.asList(new Employee[] {
+                createdPaulMcCartney,
+                createdRingoStarr
+        });
+        Employee johnLennon = new Employee();
+        johnLennon.setFirstName("John");
+        johnLennon.setLastName("Lennon");
+        johnLennon.setDepartment("Engineering");
+        johnLennon.setPosition("Developer");
+        johnLennon.setDirectReports(johnLennonDirectReports);
         Employee createdJohnLennon = restTemplate.postForEntity(employeeUrl, johnLennon, Employee.class)
                 .getBody();
 
         ReportingStructure readReportingStructure = restTemplate
-                .getForEntity(employeeReportingStructureUrl, ReportingStructure.class, createdJohnLennon.getEmployeeId()).getBody();
+                .getForEntity(employeeReportingStructureUrl, ReportingStructure.class,
+                        createdJohnLennon.getEmployeeId())
+                .getBody();
 
         assertEquals(4, readReportingStructure.getNumberOfReports());
         assertEmployeeEquivalence(createdJohnLennon, readReportingStructure.getEmployee());

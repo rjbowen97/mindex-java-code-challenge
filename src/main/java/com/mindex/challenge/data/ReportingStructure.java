@@ -1,8 +1,8 @@
+package com.mindex.challenge.data;
+
 /**
 * The ReportingStructure class represents a structure containing information about an employee and the number of reports they manage. 
 */
-package com.mindex.challenge.data;
-
 public class ReportingStructure {
 
     /**

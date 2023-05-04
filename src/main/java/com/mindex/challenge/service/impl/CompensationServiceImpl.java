@@ -1,14 +1,3 @@
-/**
- * The CompensationServiceImpl class implements the CompensationService interface to provide implementation
- * for creating and reading compensations. It uses an instance of CompensationRepository to interact with the database.
- *
- * This class is annotated with @Service, which means that it is eligible for Spring auto-detection through classpath scanning.
- * It manages a logger object to log debug statements.
- *
- * @see CompensationService: Interface for managing compensation-related operations.
- * @see CompensationRepository: Interface for accessing the Compensation entities stored in the database.
- */
-
 package com.mindex.challenge.service.impl;
 
 import com.mindex.challenge.dao.CompensationRepository;
@@ -19,6 +8,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+/**
+ * The CompensationServiceImpl class implements the CompensationService interface to provide implementation
+ * for creating and reading compensations. It uses an instance of CompensationRepository to interact with the database.
+ *
+ * This class is annotated with @Service, which means that it is eligible for Spring auto-detection through classpath scanning.
+ * It manages a logger object to log debug statements.
+ *
+ * @see CompensationService: Interface for managing compensation-related operations.
+ * @see CompensationRepository: Interface for accessing the Compensation entities stored in the database.
+ */
 @Service
 public class CompensationServiceImpl implements CompensationService {
 

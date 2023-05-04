@@ -1,14 +1,17 @@
-/**
- * This class represents the Compensation object.
- * 
- * @author RJ Bowen
- */
 package com.mindex.challenge.data;
 
 import java.util.Date;
 
 import org.springframework.data.annotation.Id;
 
+/**
+ * This class represents the Compensation object.
+ * NOTE: I have assumed that Compensations will be 1-to-1 with Employees. I also
+ * assumed that only the id of the Employee is to be stored in
+ * the Compensation object, rather than the entire Employee
+ * 
+ * @author RJ Bowen
+ */
 public class Compensation {
     @Id
     private String employee;

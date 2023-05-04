@@ -43,6 +43,14 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employee;
     }
 
+    /**
+     * Retrieves and returns the ReportingStructure of an Employee.
+     * 
+     * @param id The ID of the Employee whose Reporting Structure is to be
+     *           retrieved.
+     * @return The Reporting Structure object of the given Employee.
+     * @throws RuntimeException If the employeeId is invalid.
+     */
     @Override
     public ReportingStructure readReportingStructure(String id) {
         LOG.debug("Generating Reporting Structure for Employee with id [{}]", id);
@@ -59,6 +67,14 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     }
 
+    /**
+     * Calculates and returns the total number of direct and indirect reports of an
+     * Employee.
+     * 
+     * @param employee The Employee whose report count is to be calculated.
+     * @return The total number of direct and indirect reports of the given
+     *         Employee.
+     */
     private int getTotalNumberOfReports(Employee employee) {
         LOG.debug("Counting number of reports for Employee [{}]", employee);
 

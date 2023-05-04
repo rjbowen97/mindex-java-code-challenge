@@ -28,7 +28,14 @@ public class EmployeeController {
 
         return employeeService.read(id);
     }
-    
+
+    /**
+     * Retrieves the reporting structure of an employee with the given id.
+     * 
+     * @param id The id of the employee whose reporting structure is to be
+     *           retrieved.
+     * @return The reporting structure of the employee with the given id.
+     */
     @GetMapping("/employee/reporting-structure/{id}")
     public ReportingStructure readReportingStructure(@PathVariable String id) {
         LOG.debug("Received employee readReportingStructure request for id [{}]", id);

@@ -65,6 +65,17 @@ public class Employee {
         this.directReports = directReports;
     }
 
+    /**
+     * This method gets the number of direct reports for an employee. It checks if
+     * the directReports field is not null
+     * and returns its size, which represents the number of direct reports. If the
+     * field is null, it returns 0.
+     * 
+     * Note: This method is marked as @Transient and @JsonIgnore, which means that
+     * it will not be serialized or persisted.
+     *
+     * @return an integer representing the number of direct reports of the employee
+     */
     @Transient
     @JsonIgnore
     public int getDirectReportCount() {

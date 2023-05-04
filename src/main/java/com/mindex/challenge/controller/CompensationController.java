@@ -1,3 +1,9 @@
+/**
+ * This class is the controller for the Compensation API. It handles all REST requests related to Compensation.
+ * 
+ * @author  RJ Bowen
+ * @version 1.0
+ */
 package com.mindex.challenge.controller;
 
 import com.mindex.challenge.data.Compensation;
@@ -14,6 +20,12 @@ public class CompensationController {
     @Autowired
     private CompensationService compensationService;
 
+    /**
+     * This method creates a new Compensation object.
+     * 
+     * @param compensation The Compensation object to be created.
+     * @return The created Compensation object.
+     */
     @PostMapping("/compensation")
     public Compensation create(@RequestBody Compensation compensation) {
         LOG.debug("Received compensation create request for [{}]", compensation);
@@ -21,6 +33,12 @@ public class CompensationController {
         return compensationService.create(compensation);
     }
 
+    /**
+     * This method reads an existing Compensation object.
+     * 
+     * @param id The id of the Compensation object to be read. NOTE: This is also the id of the associated Employee object
+     * @return The read Compensation object.
+     */
     @GetMapping("/compensation/{id}")
     public Compensation read(@PathVariable String id) {
         LOG.debug("Received compensation read request for id [{}]", id);

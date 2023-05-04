@@ -100,13 +100,15 @@ public class EmployeeServiceImplTest {
         Employee createdPeteBest = restTemplate.postForEntity(employeeUrl, peteBest, Employee.class)
                 .getBody();
 
-        // Create a list of direct reports for ringoStarr consisting of createdPeteBest and createdGeorgeHarrison
+        // Create a list of direct reports for ringoStarr consisting of createdPeteBest
+        // and createdGeorgeHarrison
         List<Employee> ringoStarrDirectReports = Arrays.asList(new Employee[] {
                 createdPeteBest,
                 createdGeorgeHarrison
         });
 
-        // Create a new Employee object named ringoStarr, set its attributes and add the list of direct reports to it
+        // Create a new Employee object named ringoStarr, set its attributes and add the
+        // list of direct reports to it
         Employee ringoStarr = new Employee();
         ringoStarr.setFirstName("Ringo");
         ringoStarr.setLastName("Starr");
@@ -128,7 +130,8 @@ public class EmployeeServiceImplTest {
                 .postForEntity(employeeUrl, paulMcCartney, Employee.class)
                 .getBody();
 
-        // Create a list of direct reports for johnLennon consisting of createdPaulMcCartney and createdRingoStarr
+        // Create a list of direct reports for johnLennon consisting of
+        // createdPaulMcCartney and createdRingoStarr
         List<Employee> johnLennonDirectReports = Arrays.asList(new Employee[] {
                 createdPaulMcCartney,
                 createdRingoStarr

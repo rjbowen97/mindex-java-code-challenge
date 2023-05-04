@@ -2,11 +2,13 @@ package com.mindex.challenge.data;
 
 import java.util.List;
 
+import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class Employee {
+    @Id
     private String employeeId;
     private String firstName;
     private String lastName;

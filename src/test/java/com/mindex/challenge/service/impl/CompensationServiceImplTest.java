@@ -1,7 +1,10 @@
 package com.mindex.challenge.service.impl;
 
 import com.mindex.challenge.data.Compensation;
+import com.mindex.challenge.data.Employee;
 import com.mindex.challenge.service.CompensationService;
+import com.mindex.challenge.service.EmployeeService;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,9 +27,13 @@ import java.util.UUID;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class CompensationServiceImplTest {
 
+    private String employeeUrl;
+
     private String compensationCreateUrl;
     private String compensationReadUrl;
 
+    @Autowired
+    private EmployeeService employeeService;
     @Autowired
     private CompensationService compensationService;
 
@@ -38,14 +45,25 @@ public class CompensationServiceImplTest {
 
     @Before
     public void setup() {
+        employeeUrl = "http://localhost:" + port + "/employee";
+
         compensationCreateUrl = "http://localhost:" + port + "/compensation";
         compensationReadUrl = "http://localhost:" + port + "/compensation/{id}";
     }
 
     @Test
     public void testCreate() {
+        Employee testEmployee = new Employee();
+        testEmployee.setFirstName("John");
+        testEmployee.setLastName("Doe");
+        testEmployee.setDepartment("Engineering");
+        testEmployee.setPosition("Developer");
+
+        Employee createdEmployee = restTemplate.postForEntity(employeeUrl, testEmployee, Employee.class)
+                .getBody();
+
         Compensation testCompensation = new Compensation();
-        testCompensation.setEmployee(UUID.randomUUID().toString());
+        testCompensation.setEmployee(createdEmployee);
         testCompensation.setSalary(100000.0);
 
         Date date = convertStringToDate("2023-05-03");
@@ -68,8 +86,18 @@ public class CompensationServiceImplTest {
 
     @Test
     public void testRead() {
+
+        Employee testEmployee = new Employee();
+        testEmployee.setFirstName("John");
+        testEmployee.setLastName("Doe");
+        testEmployee.setDepartment("Engineering");
+        testEmployee.setPosition("Developer");
+
+        Employee createdEmployee = restTemplate.postForEntity(employeeUrl, testEmployee, Employee.class)
+                .getBody();
+
         Compensation testCompensation = new Compensation();
-        testCompensation.setEmployee(UUID.randomUUID().toString());
+        testCompensation.setEmployee(createdEmployee);
         testCompensation.setSalary(100000.0);
 
         Date date = convertStringToDate("2023-05-03");
@@ -80,13 +108,14 @@ public class CompensationServiceImplTest {
 
         // Read check
         Compensation readCompensation = restTemplate
-                .getForEntity(compensationReadUrl, Compensation.class, createdCompensation.getEmployee()).getBody();
-        assertEquals(createdCompensation.getEmployee(), readCompensation.getEmployee());
+                .getForEntity(compensationReadUrl, Compensation.class,
+                        createdCompensation.getEmployee().getEmployeeId())
+                .getBody();
         assertCompensationEquivalence(createdCompensation, readCompensation);
     }
 
     private static void assertCompensationEquivalence(Compensation expected, Compensation actual) {
-        assertEquals(expected.getEmployee(), actual.getEmployee());
+        assertEquals(expected.getEmployee().getEmployeeId(), actual.getEmployee().getEmployeeId());
         assertEquals(expected.getSalary(), actual.getSalary(), 0.001);
         assertEquals(expected.getEffectiveDate(), actual.getEffectiveDate());
     }

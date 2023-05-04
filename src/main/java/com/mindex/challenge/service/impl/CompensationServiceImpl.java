@@ -9,14 +9,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- * The CompensationServiceImpl class implements the CompensationService interface to provide implementation
- * for creating and reading compensations. It uses an instance of CompensationRepository to interact with the database.
+ * The CompensationServiceImpl class implements the CompensationService
+ * interface to provide implementation
+ * for creating and reading compensations. It uses an instance of
+ * CompensationRepository to interact with the database.
  *
- * This class is annotated with @Service, which means that it is eligible for Spring auto-detection through classpath scanning.
+ * This class is annotated with @Service, which means that it is eligible for
+ * Spring auto-detection through classpath scanning.
  * It manages a logger object to log debug statements.
  *
- * @see CompensationService: Interface for managing compensation-related operations.
- * @see CompensationRepository: Interface for accessing the Compensation entities stored in the database.
+ * @see CompensationService: Interface for managing compensation-related
+ *      operations.
+ * @see CompensationRepository: Interface for accessing the Compensation
+ *      entities stored in the database.
  */
 @Service
 public class CompensationServiceImpl implements CompensationService {
@@ -27,7 +32,8 @@ public class CompensationServiceImpl implements CompensationService {
     private CompensationRepository compensationRepository;
 
     /**
-     * Creates a new compensation within the database.
+     * Creates a new compensation within the database if a compensation associated
+     * with the given employee does not already exist.
      *
      * @param compensation the compensation object to be created
      * @return the newly created compensation
@@ -35,6 +41,14 @@ public class CompensationServiceImpl implements CompensationService {
     @Override
     public Compensation create(Compensation compensation) {
         LOG.debug("Creating compensation [{}]", compensation);
+
+        Compensation existingCompensation = compensationRepository
+                .findByEmployeeEmployeeId(compensation.getEmployee().getEmployeeId());
+
+        if (existingCompensation != null) {
+            throw new RuntimeException("A Compensation is already associated with Employee ID: "
+                    + compensation.getEmployee().getEmployeeId());
+        }
 
         compensationRepository.insert(compensation);
 
@@ -53,10 +67,10 @@ public class CompensationServiceImpl implements CompensationService {
     public Compensation read(String id) {
         LOG.debug("Reading compensation with employeeId [{}]", id);
 
-        Compensation compensation = compensationRepository.findByEmployee(id);
+        Compensation compensation = compensationRepository.findByEmployeeEmployeeId(id);
 
         if (compensation == null) {
-            throw new RuntimeException("Invalid employeeId: " + id);
+            throw new RuntimeException("A Compensation does not exist for Employee with employeeId: " + id);
         }
 
         return compensation;

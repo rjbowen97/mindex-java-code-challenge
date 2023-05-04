@@ -2,7 +2,7 @@ package com.mindex.challenge.data;
 
 import java.util.Date;
 
-import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 
 /**
  * This class represents the Compensation object.
@@ -13,8 +13,8 @@ import org.springframework.data.annotation.Id;
  * @author RJ Bowen
  */
 public class Compensation {
-    @Id
-    private String employee;
+    @DBRef
+    private Employee employee;
     private double salary;
     private Date effectiveDate;
 
@@ -29,7 +29,7 @@ public class Compensation {
      * 
      * @return The employee associated with this compensation object.
      */
-    public String getEmployee() {
+    public Employee getEmployee() {
         return employee;
     }
 
@@ -38,7 +38,7 @@ public class Compensation {
      * 
      * @param employee The employee to associate with this compensation object.
      */
-    public void setEmployee(String employee) {
+    public void setEmployee(Employee employee) {
         this.employee = employee;
     }
 

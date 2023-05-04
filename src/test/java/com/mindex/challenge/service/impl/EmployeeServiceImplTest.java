@@ -41,38 +41,59 @@ public class EmployeeServiceImplTest {
     }
 
     @Test
-    public void testCreateReadUpdate() {
+    public void testCreateEmployee() {
         Employee testEmployee = new Employee();
         testEmployee.setFirstName("John");
         testEmployee.setLastName("Doe");
         testEmployee.setDepartment("Engineering");
         testEmployee.setPosition("Developer");
 
-        // Create checks
         Employee createdEmployee = restTemplate.postForEntity(employeeUrl, testEmployee, Employee.class).getBody();
 
         assertNotNull(createdEmployee.getEmployeeId());
         assertEmployeeEquivalence(testEmployee, createdEmployee);
+    }
 
+    @Test
+    public void testReadEmployee() {
+        Employee testEmployee = new Employee();
+        testEmployee.setFirstName("John");
+        testEmployee.setLastName("Doe");
+        testEmployee.setDepartment("Engineering");
+        testEmployee.setPosition("Developer");
 
-        // Read checks
-        Employee readEmployee = restTemplate.getForEntity(employeeIdUrl, Employee.class, createdEmployee.getEmployeeId()).getBody();
+        Employee createdEmployee = restTemplate.postForEntity(employeeUrl, testEmployee, Employee.class).getBody();
+
+        Employee readEmployee = restTemplate
+                .getForEntity(employeeIdUrl, Employee.class, createdEmployee.getEmployeeId()).getBody();
+
         assertEquals(createdEmployee.getEmployeeId(), readEmployee.getEmployeeId());
         assertEmployeeEquivalence(createdEmployee, readEmployee);
+    }
 
+    @Test
+    public void testUpdateEmployee() {
+        Employee testEmployee = new Employee();
+        testEmployee.setFirstName("John");
+        testEmployee.setLastName("Doe");
+        testEmployee.setDepartment("Engineering");
+        testEmployee.setPosition("Developer");
 
-        // Update checks
+        Employee createdEmployee = restTemplate.postForEntity(employeeUrl, testEmployee, Employee.class).getBody();
+
+        Employee readEmployee = restTemplate
+                .getForEntity(employeeIdUrl, Employee.class, createdEmployee.getEmployeeId()).getBody();
+
         readEmployee.setPosition("Development Manager");
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        Employee updatedEmployee =
-                restTemplate.exchange(employeeIdUrl,
-                        HttpMethod.PUT,
-                        new HttpEntity<Employee>(readEmployee, headers),
-                        Employee.class,
-                        readEmployee.getEmployeeId()).getBody();
+        Employee updatedEmployee = restTemplate.exchange(employeeIdUrl,
+                HttpMethod.PUT,
+                new HttpEntity<Employee>(readEmployee, headers),
+                Employee.class,
+                readEmployee.getEmployeeId()).getBody();
 
         assertEmployeeEquivalence(readEmployee, updatedEmployee);
     }

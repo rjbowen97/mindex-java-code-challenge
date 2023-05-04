@@ -1,0 +1,150 @@
+{
+	"info": {
+		"_postman_id": "50f26f35-fa66-402e-b511-f9d3d05cfe22",
+		"name": "mindexJavaCodeChallenge",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "5583958"
+	},
+	"item": [
+		{
+			"name": "CreateEmployee",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstName\" : \"Peter\",\r\n    \"lastName\" : \"Weyland\",\r\n    \"position\" : \"Developer II\",\r\n    \"department\" : \"Engineering\"\r\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/employee",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"employee"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateCompensation",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"employee\": \"16a596ae-edd3-4847-99fe-c4518e82c86f\",\r\n    \"salary\": 60000.00,\r\n    \"effectiveDate\": \"2024-05-02\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/compensation",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"compensation"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetEmployee",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/employee/16a596ae-edd3-4847-99fe-c4518e82c86f",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"employee",
+						"16a596ae-edd3-4847-99fe-c4518e82c86f"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetCompensation",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/compensation/16a596ae-edd3-4847-99fe-c4518e82c86f",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"compensation",
+						"16a596ae-edd3-4847-99fe-c4518e82c86f"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "readReportingStructure",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/employee/reporting-structure/16a596ae-edd3-4847-99fe-c4518e82c86f",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"employee",
+						"reporting-structure",
+						"16a596ae-edd3-4847-99fe-c4518e82c86f"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateEmployee",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"employeeId\": \"16a596ae-edd3-4847-99fe-c4518e82c86f\",\r\n    \"firstName\": \"John\",\r\n    \"lastName\": \"Lennon\",\r\n    \"position\": \"Developer\",\r\n    \"department\": \"Engineering\",\r\n    \"directReports\": [\r\n        {\r\n            \"employeeId\": \"b7839309-3348-463b-a7e3-5de1c168beb3\",\r\n            \"firstName\": null,\r\n            \"lastName\": null,\r\n            \"position\": null,\r\n            \"department\": null,\r\n            \"directReports\": null\r\n        },\r\n        {\r\n            \"employeeId\": \"03aa1462-ffa9-4978-901b-7c001562cf6f\",\r\n            \"firstName\": null,\r\n            \"lastName\": null,\r\n            \"position\": null,\r\n            \"department\": null,\r\n            \"directReports\": null\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/employee/16a596ae-edd3-4847-99fe-c4518e82c86f",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"employee",
+						"16a596ae-edd3-4847-99fe-c4518e82c86f"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

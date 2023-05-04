@@ -26,169 +26,176 @@ import java.util.List;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class EmployeeServiceImplTest {
 
-    private String employeeUrl;
-    private String employeeIdUrl;
-    private String employeeReportingStructureUrl;
+        private String employeeUrl;
+        private String employeeIdUrl;
+        private String employeeReportingStructureUrl;
 
-    @Autowired
-    private EmployeeService employeeService;
+        @Autowired
+        private EmployeeService employeeService;
 
-    @LocalServerPort
-    private int port;
+        @LocalServerPort
+        private int port;
 
-    @Autowired
-    private TestRestTemplate restTemplate;
+        @Autowired
+        private TestRestTemplate restTemplate;
 
-    @Before
-    public void setup() {
-        employeeUrl = "http://localhost:" + port + "/employee";
-        employeeIdUrl = "http://localhost:" + port + "/employee/{id}";
-        employeeReportingStructureUrl = "http://localhost:" + port + "/employee/reporting-structure/{id}";
-    }
+        @Before
+        public void setup() {
+                employeeUrl = "http://localhost:" + port + "/employee";
+                employeeIdUrl = "http://localhost:" + port + "/employee/{id}";
+                employeeReportingStructureUrl = "http://localhost:" + port + "/employee/reporting-structure/{id}";
+        }
 
-    @Test
-    public void testCreateEmployee() {
-        Employee testEmployee = new Employee();
-        testEmployee.setFirstName("John");
-        testEmployee.setLastName("Doe");
-        testEmployee.setDepartment("Engineering");
-        testEmployee.setPosition("Developer");
+        @Test
+        public void testCreateEmployee() {
+                Employee testEmployee = new Employee();
+                testEmployee.setFirstName("John");
+                testEmployee.setLastName("Doe");
+                testEmployee.setDepartment("Engineering");
+                testEmployee.setPosition("Developer");
 
-        Employee createdEmployee = restTemplate.postForEntity(employeeUrl, testEmployee, Employee.class).getBody();
+                Employee createdEmployee = restTemplate.postForEntity(employeeUrl, testEmployee, Employee.class)
+                                .getBody();
 
-        assertNotNull(createdEmployee.getEmployeeId());
-        assertEmployeeEquivalence(testEmployee, createdEmployee);
-    }
+                assertNotNull(createdEmployee.getEmployeeId());
+                assertEmployeeEquivalence(testEmployee, createdEmployee);
+        }
 
-    @Test
-    public void testReadEmployee() {
-        Employee testEmployee = new Employee();
-        testEmployee.setFirstName("John");
-        testEmployee.setLastName("Doe");
-        testEmployee.setDepartment("Engineering");
-        testEmployee.setPosition("Developer");
+        @Test
+        public void testReadEmployee() {
+                Employee testEmployee = new Employee();
+                testEmployee.setFirstName("John");
+                testEmployee.setLastName("Doe");
+                testEmployee.setDepartment("Engineering");
+                testEmployee.setPosition("Developer");
 
-        Employee createdEmployee = restTemplate.postForEntity(employeeUrl, testEmployee, Employee.class).getBody();
+                Employee createdEmployee = restTemplate.postForEntity(employeeUrl, testEmployee, Employee.class)
+                                .getBody();
 
-        Employee readEmployee = restTemplate
-                .getForEntity(employeeIdUrl, Employee.class, createdEmployee.getEmployeeId()).getBody();
+                Employee readEmployee = restTemplate
+                                .getForEntity(employeeIdUrl, Employee.class, createdEmployee.getEmployeeId()).getBody();
 
-        assertEquals(createdEmployee.getEmployeeId(), readEmployee.getEmployeeId());
-        assertEmployeeEquivalence(createdEmployee, readEmployee);
-    }
+                assertEquals(createdEmployee.getEmployeeId(), readEmployee.getEmployeeId());
+                assertEmployeeEquivalence(createdEmployee, readEmployee);
+        }
 
-    @Test
-    public void testReadReportingStructure() {
-        // Create a new Employee object named georgeHarrison and set its attributes
-        Employee georgeHarrison = new Employee();
-        georgeHarrison.setFirstName("George");
-        georgeHarrison.setLastName("Harrison");
-        georgeHarrison.setDepartment("Music");
-        georgeHarrison.setPosition("Guitarist");
+        @Test
+        public void testReadReportingStructure() {
+                // Create a new Employee object named georgeHarrison and set its attributes
+                Employee georgeHarrison = new Employee();
+                georgeHarrison.setFirstName("George");
+                georgeHarrison.setLastName("Harrison");
+                georgeHarrison.setDepartment("Music");
+                georgeHarrison.setPosition("Guitarist");
 
-        Employee createdGeorgeHarrison = restTemplate
-                .postForEntity(employeeUrl, georgeHarrison, Employee.class)
-                .getBody();
+                Employee createdGeorgeHarrison = restTemplate
+                                .postForEntity(employeeUrl, georgeHarrison, Employee.class)
+                                .getBody();
 
-        // Create a new Employee object named peteBest and set its attributes
-        Employee peteBest = new Employee();
-        peteBest.setFirstName("Pete");
-        peteBest.setLastName("Best");
-        peteBest.setDepartment("Music");
-        peteBest.setPosition("Drummer");
+                // Create a new Employee object named peteBest and set its attributes
+                Employee peteBest = new Employee();
+                peteBest.setFirstName("Pete");
+                peteBest.setLastName("Best");
+                peteBest.setDepartment("Music");
+                peteBest.setPosition("Drummer");
 
-        Employee createdPeteBest = restTemplate.postForEntity(employeeUrl, peteBest, Employee.class)
-                .getBody();
+                Employee createdPeteBest = restTemplate.postForEntity(employeeUrl, peteBest, Employee.class)
+                                .getBody();
 
-        // Create a list of direct reports for ringoStarr consisting of createdPeteBest
-        // and createdGeorgeHarrison
-        List<Employee> ringoStarrDirectReports = Arrays.asList(new Employee[] {
-                createdPeteBest,
-                createdGeorgeHarrison
-        });
+                // Create a list of direct reports for ringoStarr consisting of createdPeteBest
+                // and createdGeorgeHarrison
+                List<Employee> ringoStarrDirectReports = Arrays.asList(new Employee[] {
+                                createdPeteBest,
+                                createdGeorgeHarrison
+                });
 
-        // Create a new Employee object named ringoStarr, set its attributes and add the
-        // list of direct reports to it
-        Employee ringoStarr = new Employee();
-        ringoStarr.setFirstName("Ringo");
-        ringoStarr.setLastName("Starr");
-        ringoStarr.setDepartment("Music");
-        ringoStarr.setPosition("Drummer");
-        ringoStarr.setDirectReports(ringoStarrDirectReports);
+                // Create a new Employee object named ringoStarr, set its attributes and add the
+                // list of direct reports to it
+                Employee ringoStarr = new Employee();
+                ringoStarr.setFirstName("Ringo");
+                ringoStarr.setLastName("Starr");
+                ringoStarr.setDepartment("Music");
+                ringoStarr.setPosition("Drummer");
+                ringoStarr.setDirectReports(ringoStarrDirectReports);
 
-        Employee createdRingoStarr = restTemplate.postForEntity(employeeUrl, ringoStarr, Employee.class)
-                .getBody();
+                Employee createdRingoStarr = restTemplate.postForEntity(employeeUrl, ringoStarr, Employee.class)
+                                .getBody();
 
-        // Create a new Employee object named paulMcCartney and set its attributes
-        Employee paulMcCartney = new Employee();
-        paulMcCartney.setFirstName("Paul");
-        paulMcCartney.setLastName("McCartney");
-        paulMcCartney.setDepartment("Music");
-        paulMcCartney.setPosition("Singer");
+                // Create a new Employee object named paulMcCartney and set its attributes
+                Employee paulMcCartney = new Employee();
+                paulMcCartney.setFirstName("Paul");
+                paulMcCartney.setLastName("McCartney");
+                paulMcCartney.setDepartment("Music");
+                paulMcCartney.setPosition("Singer");
 
-        Employee createdPaulMcCartney = restTemplate
-                .postForEntity(employeeUrl, paulMcCartney, Employee.class)
-                .getBody();
+                Employee createdPaulMcCartney = restTemplate
+                                .postForEntity(employeeUrl, paulMcCartney, Employee.class)
+                                .getBody();
 
-        // Create a list of direct reports for johnLennon consisting of
-        // createdPaulMcCartney and createdRingoStarr
-        List<Employee> johnLennonDirectReports = Arrays.asList(new Employee[] {
-                createdPaulMcCartney,
-                createdRingoStarr
-        });
+                // Create a list of direct reports for johnLennon consisting of
+                // createdPaulMcCartney and createdRingoStarr
+                List<Employee> johnLennonDirectReports = Arrays.asList(new Employee[] {
+                                createdPaulMcCartney,
+                                createdRingoStarr
+                });
 
-        // Create a new Employee object named johnLennon, set its attributes and add the
-        // list of direct reports to it
-        Employee johnLennon = new Employee();
-        johnLennon.setFirstName("John");
-        johnLennon.setLastName("Lennon");
-        johnLennon.setDepartment("Engineering");
-        johnLennon.setPosition("Developer");
-        johnLennon.setDirectReports(johnLennonDirectReports);
+                // Create a new Employee object named johnLennon, set its attributes and add the
+                // list of direct reports to it
+                Employee johnLennon = new Employee();
+                johnLennon.setFirstName("John");
+                johnLennon.setLastName("Lennon");
+                johnLennon.setDepartment("Engineering");
+                johnLennon.setPosition("Developer");
+                johnLennon.setDirectReports(johnLennonDirectReports);
 
-        Employee createdJohnLennon = restTemplate.postForEntity(employeeUrl, johnLennon, Employee.class)
-                .getBody();
+                Employee createdJohnLennon = restTemplate.postForEntity(employeeUrl, johnLennon, Employee.class)
+                                .getBody();
 
-        ReportingStructure readReportingStructure = restTemplate
-                .getForEntity(employeeReportingStructureUrl, ReportingStructure.class,
-                        createdJohnLennon.getEmployeeId())
-                .getBody();
+                Employee readJohnLennon = restTemplate
+                                .getForEntity(employeeIdUrl, Employee.class, createdJohnLennon.getEmployeeId())
+                                .getBody();
 
-        assertEquals(4, readReportingStructure.getNumberOfReports());
-        assertEmployeeEquivalence(createdJohnLennon, readReportingStructure.getEmployee());
-    }
+                ReportingStructure johnLennonReportingStructure = restTemplate
+                                .getForEntity(employeeReportingStructureUrl, ReportingStructure.class,
+                                                readJohnLennon.getEmployeeId())
+                                .getBody();
 
-    @Test
-    public void testUpdateEmployee() {
-        Employee testEmployee = new Employee();
-        testEmployee.setFirstName("John");
-        testEmployee.setLastName("Doe");
-        testEmployee.setDepartment("Engineering");
-        testEmployee.setPosition("Developer");
+                assertEquals(4, johnLennonReportingStructure.getNumberOfReports());
+                assertEmployeeEquivalence(createdJohnLennon, johnLennonReportingStructure.getEmployee());
+        }
 
-        Employee createdEmployee = restTemplate.postForEntity(employeeUrl, testEmployee, Employee.class).getBody();
+        @Test
+        public void testUpdateEmployee() {
+                Employee testEmployee = new Employee();
+                testEmployee.setFirstName("John");
+                testEmployee.setLastName("Doe");
+                testEmployee.setDepartment("Engineering");
+                testEmployee.setPosition("Developer");
 
-        Employee readEmployee = restTemplate
-                .getForEntity(employeeIdUrl, Employee.class, createdEmployee.getEmployeeId()).getBody();
+                Employee createdEmployee = restTemplate.postForEntity(employeeUrl, testEmployee, Employee.class)
+                                .getBody();
 
-        readEmployee.setPosition("Development Manager");
+                Employee readEmployee = restTemplate
+                                .getForEntity(employeeIdUrl, Employee.class, createdEmployee.getEmployeeId()).getBody();
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
+                readEmployee.setPosition("Development Manager");
 
-        Employee updatedEmployee = restTemplate.exchange(employeeIdUrl,
-                HttpMethod.PUT,
-                new HttpEntity<Employee>(readEmployee, headers),
-                Employee.class,
-                readEmployee.getEmployeeId()).getBody();
+                HttpHeaders headers = new HttpHeaders();
+                headers.setContentType(MediaType.APPLICATION_JSON);
 
-        assertEmployeeEquivalence(readEmployee, updatedEmployee);
-    }
+                Employee updatedEmployee = restTemplate.exchange(employeeIdUrl,
+                                HttpMethod.PUT,
+                                new HttpEntity<Employee>(readEmployee, headers),
+                                Employee.class,
+                                readEmployee.getEmployeeId()).getBody();
 
-    private static void assertEmployeeEquivalence(Employee expected, Employee actual) {
-        assertEquals(expected.getFirstName(), actual.getFirstName());
-        assertEquals(expected.getLastName(), actual.getLastName());
-        assertEquals(expected.getDepartment(), actual.getDepartment());
-        assertEquals(expected.getPosition(), actual.getPosition());
-    }
+                assertEmployeeEquivalence(readEmployee, updatedEmployee);
+        }
+
+        private static void assertEmployeeEquivalence(Employee expected, Employee actual) {
+                assertEquals(expected.getFirstName(), actual.getFirstName());
+                assertEquals(expected.getLastName(), actual.getLastName());
+                assertEquals(expected.getDepartment(), actual.getDepartment());
+                assertEquals(expected.getPosition(), actual.getPosition());
+        }
 }

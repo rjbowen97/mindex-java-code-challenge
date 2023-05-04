@@ -1,7 +1,7 @@
 /**
  * This class represents the Compensation object.
  * 
- * @author [Your Name]
+ * @author RJ Bowen
  */
 package com.mindex.challenge.data;
 

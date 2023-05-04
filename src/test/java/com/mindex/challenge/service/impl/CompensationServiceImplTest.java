@@ -48,11 +48,7 @@ public class CompensationServiceImplTest {
         testCompensation.setEmployee(UUID.randomUUID().toString());
         testCompensation.setSalary(100000.0);
 
-        String dateString = "2023-05-03";
-        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate localDate = LocalDate.parse(dateString, dateFormat);
-        Date date = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-
+        Date date = convertStringToDate("2023-05-03");
         testCompensation.setEffectiveDate(date);
 
         // Create check
@@ -63,17 +59,20 @@ public class CompensationServiceImplTest {
         assertCompensationEquivalence(testCompensation, createdCompensation);
     }
 
+    private Date convertStringToDate(String dateString) {
+        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate localDate = LocalDate.parse(dateString, dateFormat);
+        Date date = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        return date;
+    }
+
     @Test
     public void testRead() {
         Compensation testCompensation = new Compensation();
         testCompensation.setEmployee(UUID.randomUUID().toString());
         testCompensation.setSalary(100000.0);
 
-        String dateString = "2023-05-03";
-        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate localDate = LocalDate.parse(dateString, dateFormat);
-        Date date = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-
+        Date date = convertStringToDate("2023-05-03");
         testCompensation.setEffectiveDate(date);
 
         Compensation createdCompensation = restTemplate
